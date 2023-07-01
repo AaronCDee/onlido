@@ -1,0 +1,14 @@
+<% if !@users.empty? %>
+    <% @users.each do |user| %>
+        <div>
+            <p><%= user.name %></p>
+            <p><%= user.email %></p>
+            <%= link_to "Edit", edit_user_path(user) %>
+            <%= link_to "Delete", user, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure?" } %>
+        </div>
+    <% end %>
+<% else %>
+    <div>
+        <p>You have no users :(</p>
+    </div>
+<% end %>
