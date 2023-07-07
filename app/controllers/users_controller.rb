@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :is_admin, only: :index
+    before_action :is_admin, only: [:index, :destroy]
     
     def index
         @users = User.all
@@ -29,8 +29,14 @@ class UsersController < ApplicationController
     end
 
     # Only self is able to update
-    def updated
-
+    def update
+        @user = User.find(params[:id])
+        if @user.update(user_params)
+            flash[:success] = "Account details updated successfully"
+            redirect_to @user
+        else
+            render "edit", status: :unprocessable_entity
+        end
     end
 
     # Deletes a user
@@ -38,6 +44,7 @@ class UsersController < ApplicationController
     def destroy
         @user = User.find(params[:id])
         @user.destroy
+        redirect_to users_url, status: :see_other
     end
 
     private
